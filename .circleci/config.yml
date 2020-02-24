@@ -11,7 +11,7 @@ jobs:
             - checkout
             - run:
                 command: |
-                    .circleci/commit_check.sh
+                    source .circleci/commit_check.sh
 workflows:
   version: 2
   default-workflow:
