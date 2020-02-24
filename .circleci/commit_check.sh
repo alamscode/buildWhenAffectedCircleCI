@@ -8,7 +8,7 @@ set -e
 LATEST_COMMIT=$(git rev-parse HEAD)
 
 # latest commit where path/to/folder1 was changed
-FOLDER1_COMMIT=$(git log -1 --format=format:%H --full-diff file1.txt)
+FOLDER1_COMMIT=$(git log -1 --format=format:%H --full-diff folder1)
 
 # latest commit where path/to/folder2 was changed
 # FOLDER2_COMMIT=$(git log -1 --format=format:%H --full-diff path/to/folder2)
