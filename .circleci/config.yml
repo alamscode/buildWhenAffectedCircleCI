@@ -1,0 +1,24 @@
+##################
+### config.yml ###
+##################
+
+version: 2
+jobs:
+    build:
+        docker:
+            - image: circleci/python:3.6
+        steps:
+            - checkout
+            - run:
+                command: |
+                    .circleci/commit_check.sh
+workflows:
+  version: 2
+  default-workflow:
+    jobs:
+    - build:
+        filters:
+            branches:
+                only:
+                    - release/current
+                    - master
