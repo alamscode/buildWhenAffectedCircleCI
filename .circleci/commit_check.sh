@@ -1,7 +1,3 @@
-#######################
-### commit_check.sh ###
-#######################
-
 set -e
 
 # latest commit
@@ -16,7 +12,6 @@ FOLDER1_COMMIT=$(git log -1 --format=format:%H --full-diff folder1)
 if [ $FOLDER1_COMMIT = $LATEST_COMMIT ];
     then
         echo "files in folder1 has changed"
-        .circleci/do_something.sh
 # elif [ $FOLDER2_COMMIT = $LATEST_COMMIT ];
 #     then
 #         echo "files in folder2 has changed"
