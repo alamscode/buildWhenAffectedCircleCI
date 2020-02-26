@@ -25,6 +25,8 @@ workflows:
     jobs:
     - commit_check
     - build:
+        requires:
+            - commit_check
         filters:
             branches:
                 only:
