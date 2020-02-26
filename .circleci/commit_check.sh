@@ -21,7 +21,7 @@
 #      exit 1;
 # fi
 
-ROOT="." 
+ROOT="./Docker/SimpleApp" 
 REPOSITORY_TYPE="github"
 CIRCLE_API="https://circleci.com/api"
 
