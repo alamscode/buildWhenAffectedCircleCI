@@ -44,11 +44,11 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
-#   default-workflow:
-#     when: << pipeline.parameters.SimpleApp >>
-#     jobs:
-#     - build:
-#         filters:
-#             branches:
-#                 only:
-#                     - master
+  default-workflow:
+    when: << pipeline.parameters.SimpleApp >>
+    jobs:
+    - build:
+        filters:
+            branches:
+                only:
+                    - master
