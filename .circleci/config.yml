@@ -43,7 +43,7 @@ jobs:
                 type: string
         working_directory: ~/project/packages/<< parameters.package_name >>
         docker:
-            - image: 020046395185.dkr.ecr.us-east-1.amazonaws.com/aws-cli:latest
+            - image: circleci/python:3.6
               aws_auth:
                   aws_access_key_id: $AWS_ACCESS_KEY
                   aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
