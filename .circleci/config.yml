@@ -37,6 +37,39 @@ jobs:
                 root: ~/project
                 paths:
                     - packages/<< parameters.package_name >>
+    build_img:
+        docker:
+            - image: 267120416279.dkr.ecr.us-east-1.amazonaws.com/circleci/python:3.7
+            aws_auth:
+                aws_access_key_id: $AWS_ACCESS_KEY
+                aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+            environment:
+                TZ: "/usr/share/zoneinfo/America/New_York"
+                VERSION_BRANCHES: "develop staging master"
+        steps:
+            - checkout
+            - setup_remote_docker:
+                version: 18.06.0-ce
+            - run:
+                name: Build and push wing/api-audit
+                command: |
+                    aws configure set \
+                    aws_access_key_id $AWS_ACCESS_KEY
+                    aws configure set \
+                    aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                    aws configure set region $AWS_DEFAULT_REGION
+                    .circleci/build_img.sh microservice \
+                    $CIRCLE_BRANCH ${CIRCLE_SHA1:0:7} \
+                    2020022002
+            - add_ssh_keys:
+                fingerprints:
+                    - "f3:ad:d9:6d:e9:ae:a5:9a:77:7a:6c:b5:47:9a:1c:72"
+                    - "48:54:db:bc:e6:3d:5e:c7:df:c6:18:11:05:e2:64:4c"
+            - run:
+                name: Configure git and tag branch
+                command: |
+                    .circleci/push_git_tag.sh
+
                     
 workflows:
   version: 2
@@ -44,12 +77,12 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
-  others:
-    when: << pipeline.parameters.requirements >>
-    jobs:
-      - build:
-            package_name: requirements
-            filters:
-                branches:
-                    only:
-                        - master
+#   others:
+#     when: << pipeline.parameters.requirements >>
+#     jobs:
+#       - build:
+#             package_name: requirements
+#             filters:
+#                 branches:
+#                     only:
+#                         - master
