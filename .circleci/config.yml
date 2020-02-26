@@ -44,12 +44,12 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
-#   others:
-#     when: << pipeline.parameters.requirements >>
-#     jobs:
-#       - build:
-#             package_name: requirements
-#             filters:
-#                 branches:
-#                     only:
-#                         - master
+  others:
+    when: << pipeline.parameters.requirements >>
+    jobs:
+      - build:
+            package_name: requirements
+            filters:
+                branches:
+                    only:
+                        - master
