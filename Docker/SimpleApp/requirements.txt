@@ -1,5 +1,5 @@
 Flask==0.10.1
 gunicorn==19.6.0
-futures==3.0.4
+futures==3.0.5
 
 
