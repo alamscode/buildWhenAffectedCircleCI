@@ -1,17 +1,29 @@
 version: 2
 jobs:
+    commit_check:
+        docker:
+            - image: circleci/pyhton:3.6
+        steps:
+            - checkout
+            - run:
+                name: Check commit
+                command: |
+                    source .circleci/commit_check.sh
     build:
         docker:
             - image: circleci/python:3.6
         steps:
             - checkout
             - run:
+                name: Check commit
                 command: |
-                    source .circleci/commit_check.sh
+                    echo "Build step run"
+                    
 workflows:
   version: 2
   default-workflow:
     jobs:
+    - commit_check
     - build:
         filters:
             branches:
