@@ -68,7 +68,7 @@ if [[ ${LAST_COMPLETED_BUILD_SHA} == "null" ]]; then
   LAST_COMPLETED_BUILD_SHA=master
 fi
 
-PACKAGES=$(ls ${ROOT} -l | grep ^f | awk '{print $9}')
+PACKAGES=$(ls -l ${ROOT} | awk '{print $9}')
 echo "Searching for changes since commit [${LAST_COMPLETED_BUILD_SHA:0:7}] ..."
 
 
