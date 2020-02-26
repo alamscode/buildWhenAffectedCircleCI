@@ -17,6 +17,10 @@ jobs:
             command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
 
     build:
+        parameters:
+            package_name:
+                type: string
+        working_directory: ~/project/packages/<< parameters.package_name >>
         docker:
             - image: circleci/python:3.6
         steps:
@@ -25,6 +29,10 @@ jobs:
                 name: Check commit
                 command: |
                     echo "Build step run"
+            - persist_to_workspace:
+                root: ~/project
+                paths:
+                    - packages/<< parameters.package_name >>
                     
 workflows:
   version: 2
