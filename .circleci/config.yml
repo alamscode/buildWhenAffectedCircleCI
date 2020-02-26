@@ -44,11 +44,9 @@ jobs:
         working_directory: ~/project/packages/<< parameters.package_name >>
         docker:
             - image: circleci/python:3.6
-            aws_auth:
-                aws_access_key_id: $AWS_ACCESS_KEY
-                aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
-            environment:
-                VERSION_BRANCHES: "develop staging master"
+              aws_auth:
+                  aws_access_key_id: $AWS_ACCESS_KEY
+                  aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
         steps:
             - checkout
             - setup_remote_docker:
