@@ -79,7 +79,7 @@ workflows:
   others:
     when: << pipeline.parameters.requirements >>
     jobs:
-      - build:
+      - build_img:
             package_name: requirements
             filters:
                 branches:
