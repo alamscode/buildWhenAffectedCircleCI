@@ -47,8 +47,9 @@ workflows:
   others:
     when: << pipeline.parameters.SimpleApp >>
     jobs:
-    - build:
-        filters:
-            branches:
-                only:
-                    - master
+      - build:
+            package_name: SimpleApp
+            filters:
+                branches:
+                    only:
+                        - master
