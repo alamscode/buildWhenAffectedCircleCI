@@ -1,14 +1,21 @@
 version: 2
+
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
 jobs:
-    commit_check:
+    trigger-workflows:
         docker:
             - image: circleci/python:3.6
         steps:
-            - checkout
-            - run:
-                name: Check commit
-                command: |
-                    source .circleci/commit_check.sh
+        - checkout
+        - run:
+            name: Trigger workflows
+            command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
+
     build:
         docker:
             - image: circleci/python:3.6
@@ -21,6 +28,10 @@ jobs:
                     
 workflows:
   version: 2
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
   default-workflow:
     jobs:
     - commit_check
