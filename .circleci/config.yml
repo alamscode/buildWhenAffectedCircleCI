@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -32,10 +32,10 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
-  default-workflow:
-    jobs:
-    - build:
-        filters:
-            branches:
-                only:
-                    - master
+#   default-workflow:
+#     jobs:
+#     - build:
+#         filters:
+#             branches:
+#                 only:
+#                     - master
