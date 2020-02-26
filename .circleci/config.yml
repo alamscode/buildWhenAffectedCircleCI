@@ -34,10 +34,7 @@ workflows:
       - trigger-workflows
   default-workflow:
     jobs:
-    - commit_check
     - build:
-        requires:
-            - commit_check
         filters:
             branches:
                 only:
