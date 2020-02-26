@@ -84,7 +84,7 @@ do
   if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
   else
-    PARAMETERS+=", \"$(basename $PACKAGE .txt)\":true"
+    PARAMETERS+=", \"requirements\":true"
     COUNT=$((COUNT + 1))
     echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
   fi
