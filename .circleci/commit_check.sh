@@ -4,14 +4,14 @@ set -e
 LATEST_COMMIT=$(git rev-parse HEAD)
 
 # latest commit where path/to/folder1 was changed
-FOLDER1_COMMIT=$(git log -1 --format=format:%H --full-diff Docker/SimpleApp/requirements.txt)
+FOLDER1_COMMIT=$(git log -1 --format=format:%H --full-diff ../Docker/SimpleApp/requirements.txt)
 
 # latest commit where path/to/folder2 was changed
 # FOLDER2_COMMIT=$(git log -1 --format=format:%H --full-diff path/to/folder2)
 
 if [ $FOLDER1_COMMIT = $LATEST_COMMIT ];
     then
-        echo "files in folder1 has changed"
+        echo "requirements have changed"
 # elif [ $FOLDER2_COMMIT = $LATEST_COMMIT ];
 #     then
 #         echo "files in folder2 has changed"
