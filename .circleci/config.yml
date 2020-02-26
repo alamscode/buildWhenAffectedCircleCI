@@ -2,9 +2,13 @@ version: 2.1
 
 parameters:
   # This parameter is used to trigger the main workflow
-  trigger:
-    type: boolean
-    default: true
+    trigger:
+        type: boolean
+        default: true
+  
+    default-workflow:
+        type: boolean
+        default: false
 
 jobs:
     trigger-workflows:
@@ -41,6 +45,7 @@ workflows:
     jobs:
       - trigger-workflows
   default-workflow:
+    when: << pipeline.parameters.default-workflow >>
     jobs:
     - build:
         filters:
