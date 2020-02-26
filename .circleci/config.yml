@@ -6,7 +6,7 @@ parameters:
         type: boolean
         default: true
   
-    SimpleApp:
+    requirements.txt:
         type: boolean
         default: false
 
@@ -44,12 +44,12 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
-#   others:
-#     when: << pipeline.parameters.SimpleApp >>
-#     jobs:
-#       - build:
-#             package_name: SimpleApp
-#             filters:
-#                 branches:
-#                     only:
-#                         - master
+  others:
+    when: << pipeline.parameters.requirements.txt >>
+    jobs:
+      - build:
+            package_name: SimpleApp
+            filters:
+                branches:
+                    only:
+                        - master
