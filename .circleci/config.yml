@@ -58,7 +58,6 @@ jobs:
                     aws_access_key_id $AWS_ACCESS_KEY
                     aws configure set \
                     aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                    aws configure set region $AWS_DEFAULT_REGION
                     chmod +x .circleci/build_img.sh && .circleci/build_img.sh 
             # - run:
             #     name: Configure git and tag branch
