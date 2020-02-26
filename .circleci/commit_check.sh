@@ -12,10 +12,11 @@ FOLDER1_COMMIT=$(git log -1 --format=format:%H --full-diff Docker/SimpleApp/requ
 if [ $FOLDER1_COMMIT = $LATEST_COMMIT ];
     then
         echo "requirements have changed"
+        exit 0;
 # elif [ $FOLDER2_COMMIT = $LATEST_COMMIT ];
 #     then
 #         echo "files in folder2 has changed"
 else
      echo "no folders of relevance has changed"
-     exit 0;
+     exit 1;
 fi
