@@ -47,8 +47,6 @@ jobs:
             #   aws_auth:
             #       aws_access_key_id: $AWS_ACCESS_KEY
             #       aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
-              environment:
-                SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
         steps:
             - checkout
             - setup_remote_docker:
