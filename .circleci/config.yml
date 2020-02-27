@@ -20,9 +20,9 @@ jobs:
                 name: build-deps
                 command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
             - persist_to_workspace:
-                  root: /
+                  root: .circleci
                   paths:
-                      - .circleci/commit_check.sh
+                      - commit_check.sh
     build_img:
         parameters:
         docker:
