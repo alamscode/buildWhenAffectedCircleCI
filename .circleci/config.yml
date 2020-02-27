@@ -20,28 +20,8 @@ jobs:
             name: Trigger workflows
             command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
 
-    # build:
-    #     parameters:
-    #         package_name:
-    #             type: string
-    #     working_directory: ~/project/packages/<< parameters.package_name >>
-    #     docker:
-    #         - image: circleci/python:3.6
-    #     steps:
-    #         - checkout
-    #         - run:
-    #             name: Check commit
-    #             command: |
-    #                 echo "Build step run"
-    #         - persist_to_workspace:
-    #             root: ~/project
-    #             paths:
-    #                 - packages/<< parameters.package_name >>
     build_img:
         parameters:
-            package_name:
-                type: string
-        working_directory: ~/project/packages/<< parameters.package_name >>
         docker:
             - image: circleci/python:3.6
             #   aws_auth:
@@ -60,14 +40,6 @@ jobs:
                     aws configure set \
                     aws_secret_access_key $AWS_SECRET_ACCESS_KEY
                     chmod +x .circleci/build_img.sh && .circleci/build_img.sh 
-            # - run:
-            #     name: Configure git and tag branch
-            #     command: |
-            #         .circleci/push_git_tag.sh
-            - persist_to_workspace:
-                root: ~/project
-                paths:
-                    - packages/<< parameters.package_name >>
 
                     
 workflows:
@@ -80,7 +52,6 @@ workflows:
     when: << pipeline.parameters.requirements >>
     jobs:
       - build_img:
-            package_name: requirements
             filters:
                 branches:
                     only:
