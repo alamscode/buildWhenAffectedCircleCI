@@ -25,6 +25,7 @@ sudo docker run hello-world
 ```
 
 
+
 Other commands: 
 + check docker status 
 ```
