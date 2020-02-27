@@ -85,7 +85,7 @@ jobs:
                             PARAMETERS+=", \"requirements\":true"
                             COUNT=$((COUNT + 1))
                             echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
-                            echo "Hello, world!" > checksum.txt
+                            echo "Hello, world!" > .circleci/checksum.txt
                         else
                             echo -e "\e[90m  [-] $PACKAGE \e[0m"
                         fi
@@ -135,7 +135,7 @@ jobs:
             - attach_workspace: 
                 at: .circleci
             - run: |
-                if [[ `cat checksum.txt` == "Hello, world!" ]]; then
+                if [[ `cat .circleci/checksum.txt` == "Hello, world!" ]]; then
                   echo "It worked!";
                 else
                   echo "Nope!"; exit 1
