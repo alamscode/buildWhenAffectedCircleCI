@@ -62,7 +62,6 @@ do
     if [[ $PACKAGE == "requirements.txt" ]]; then
       echo "commit-${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
     fi
-
   else
     if [[ $PACKAGE == "requirements.txt" ]]; then
         PARAMETERS+=", \"requirements\":true"
