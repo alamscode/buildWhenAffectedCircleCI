@@ -26,7 +26,3 @@ VOLUME ["/app-data"]
 # Running Python Application  
 CMD gunicorn -b :$PORT -c gunicorn.conf.py main:app
 
-
-
-
-
