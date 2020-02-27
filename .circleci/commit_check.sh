@@ -60,7 +60,6 @@ do
   if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
     if [[ $PACKAGE == "requirements.txt" ]]; then
-      # echo "commit-${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
       checksum=$(git log -n 1 --pretty=format:%H -- ${PACKAGE_PATH#/})
       SHORT_GIT_HASH=$(echo $checksum | cut -c -7)
       echo -e "${SHORT_GIT_HASH}" > .circleci/checksum
@@ -72,7 +71,9 @@ do
         echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
         echo "${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
     else
-        echo -e "\e[90m  [-] $PACKAGE \e[0m"
+        # echo -e "\e[90m  [-] $PACKAGE \e[0m"
+        COUNT=$((COUNT + 1))
+        echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
     fi
   fi
 done
