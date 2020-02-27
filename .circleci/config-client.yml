@@ -1,22 +1,18 @@
-version: 2.1
+version: 2
 
-parameters:
-  # This parameter is used to trigger the main workflow
-  trigger:
-    type: boolean
-    default: true
-  requirements:
-    type: boolean
-    default: false
 jobs:
-  trigger-workflows:
+  build-deps:
     docker:
       - image: circleci/python:3.6
     steps:
-    - checkout
-    - run:
-        name: Trigger workflows
-        command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
+      - checkout
+      - run:
+          name: build-deps
+          command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
+      - persist_to_workspace:
+          root: .circleci
+          paths:
+            - ./*
   build_test:
     docker:
       - image: 267120416279.dkr.ecr.us-east-1.amazonaws.com/wingaudit/api-test:2020022002
@@ -71,6 +67,8 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.06.0-ce
+      - attach_workspace: 
+          at: .circleci
       - run:
           name: Build and push wing/api-audit
           command: |
@@ -81,7 +79,7 @@ jobs:
             aws configure set region $AWS_DEFAULT_REGION
             .circleci/build_img.sh microservice \
             $CIRCLE_BRANCH ${CIRCLE_SHA1:0:7} \
-            2020022002
+            $(cat .circleci/checksum)
       - add_ssh_keys:
           fingerprints:
             - "f3:ad:d9:6d:e9:ae:a5:9a:77:7a:6c:b5:47:9a:1c:72"
@@ -103,15 +101,15 @@ jobs:
             bash ./ecs_deploy.sh master prod
 workflows:
   version: 2
-  trigger:
-    when: << pipeline.parameters.trigger >>
-    jobs:
-      - trigger-workflows
   initial_flow:
-    when: << pipeline.parameters.requirements >>
     jobs:
-      - build_test
+      - build-deps
+      - build_test:
+          requires:
+            - build-deps
       - build_img:
+          requires:
+            - build-deps
           filters:
             branches:
               only:
@@ -124,5 +122,6 @@ workflows:
             branches:
               only: master
           requires:
+            - build-deps
             - build_test
             - build_img
