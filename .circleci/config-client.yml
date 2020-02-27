@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -9,8 +9,15 @@ parameters:
     type: boolean
     default: false
 jobs:
+  trigger-workflows:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+    - checkout
+    - run:
+        name: Trigger workflows
+        command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
   build_test:
-    parameters:
     docker:
       - image: 267120416279.dkr.ecr.us-east-1.amazonaws.com/wingaudit/api-test:2020022002
         aws_auth:
@@ -96,7 +103,12 @@ jobs:
             bash ./ecs_deploy.sh master prod
 workflows:
   version: 2
+  trigger:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
   initial_flow:
+    when: << pipeline.parameters.requirements >>
     jobs:
       - build_test
       - build_img:

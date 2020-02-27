@@ -22,7 +22,7 @@ workers = 2 # good
 # maximum number of requests handled concurrently by EACH worker.
 threads = 25
 
-# Settings specific to the Managed VMs production environment such as "bind"
+# Settings specific to the Managed VMs  production environment such as "bind"
 # and "logfile" are set in the Dockerfile's ENTRYPOINT directive.
 
 # Store the process ID of gunicorn.  Used for testing.
