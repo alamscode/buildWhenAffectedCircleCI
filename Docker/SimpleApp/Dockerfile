@@ -8,7 +8,6 @@ WORKDIR /usr/src/app
 
 # Installing python dependencies
 COPY requirements.txt /usr/src/app/
-# RUN pip install awscli --upgrade --user
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copying src code to Container

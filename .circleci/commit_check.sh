@@ -13,7 +13,6 @@ echo $LAST_COMPLETED_BUILD_SHA
 if  [[ ${LAST_COMPLETED_BUILD_SHA} == "null" ]]; then
   echo -e "\e[93mThere are no completed CI builds in branch ${CIRCLE_BRANCH}.\e[0m"
 
-  # Adapted from https://gist.github.com/joechrysler/6073741
   TREE=$(git show-branch -a \
     | grep '\*' \
     | grep -v `git rev-parse --abbrev-ref HEAD` \
@@ -58,7 +57,7 @@ do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
   LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $CIRCLE_SHA1 ^$LAST_COMPLETED_BUILD_SHA --format=format:%H --full-diff ${PACKAGE_PATH#/})
 
-  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
+  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" && $PACKAGE != "requirements.txt" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
   else
     PARAMETERS+=", \"requirements\":true"
