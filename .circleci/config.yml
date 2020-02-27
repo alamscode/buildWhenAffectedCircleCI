@@ -161,7 +161,7 @@ workflows:
     # when: << pipeline.parameters.requirements >>
     jobs:
       - build_img:
-            require:
+            requires:
                 - build-deps
             filters:
                 branches:
