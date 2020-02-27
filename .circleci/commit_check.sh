@@ -61,7 +61,10 @@ do
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
     if [[ $PACKAGE == "requirements.txt" ]]; then
       # echo "commit-${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
-      checksum=$(cksum $PACKAGE)
+      checksum=$(git ls-files -s $PACKAGE)
+      echo $checksum
+      SHORT_GIT_HASH=$(echo $checksum | cut -c -7)
+      echo $SHORT_GIT_HASH
       echo "${checksum}" > .circleci/checksum
     fi
   else
