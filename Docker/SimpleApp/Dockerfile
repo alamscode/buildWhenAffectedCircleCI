@@ -20,7 +20,6 @@ ENV PORT 8080
 # Exposing Ports
 EXPOSE $PORT 
 
-
 # Setting Persistent data
 VOLUME ["/app-data"]
 

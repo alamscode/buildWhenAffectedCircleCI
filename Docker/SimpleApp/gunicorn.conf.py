@@ -16,7 +16,7 @@ worker_class = 'gthread'
 # but will also reduce the app's ability to utilize all available CPU resources.
 #workers = multiprocessing.cpu_count()
 #workers = 8 # good
-workers = 2 # good  
+workers = 2 # good 
 
 # Use an arbitrary number of threads for concurrency. This will dictate the
 # maximum number of requests handled concurrently by EACH worker.
