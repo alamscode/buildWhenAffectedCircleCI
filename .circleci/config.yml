@@ -135,7 +135,7 @@ jobs:
             - attach_workspace: 
                 at: .circleci
             - run: |
-                if [[ `cat .circleci/checksum` == "Hello, world!" ]]; then
+                if [[ `cat checksum` == "Hello, world!" ]]; then
                   echo "It worked!";
                 else
                   echo "Nope!"; exit 1
