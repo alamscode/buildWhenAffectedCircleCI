@@ -86,7 +86,7 @@ Normally, image name convention is something like: `
 ```
 sudo docker build -t my-python-app:1.0.1 .
 ```
-
+ 
 #### check all docker images
 ```
 $ sudo docker images
