@@ -8,7 +8,7 @@ import multiprocessing
 # Use threaded workers. Thread-based concurrency is provided via the 'futures'
 # package. 'gevent' or other workers would be candidates, except that the ndb
 # library has its own concurrency model that conflicts with gevent and possibly
-# with similar approaches.
+# with similar approaches..
 worker_class = 'gthread'
 
 # Use a number of workers equal to the number of CPU cores available.
