@@ -64,7 +64,7 @@ do
         PARAMETERS+=", \"requirements\":true"
         COUNT=$((COUNT + 1))
         echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
-        echo "${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > checksum
+        echo "${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
     else
         echo -e "\e[90m  [-] $PACKAGE \e[0m"
     fi
