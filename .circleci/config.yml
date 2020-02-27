@@ -11,15 +11,27 @@ parameters:
         default: false
 
 jobs:
-    trigger-workflows:
+    # trigger-workflows:
+    #     docker:
+    #         - image: circleci/python:3.6
+    #     steps:
+    #     - checkout
+    #     - run:
+    #         name: Trigger workflows
+    #         command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
+
+    build-deps:
         docker:
             - image: circleci/python:3.6
         steps:
-        - checkout
-        - run:
-            name: Trigger workflows
-            command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
-
+            - checkout
+            - run:
+                name: build-deps
+                command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
+            - persist_to_workspace:
+                  root: /
+                  paths:
+                      - .circleci/commit_check.sh
     build_img:
         parameters:
         docker:
