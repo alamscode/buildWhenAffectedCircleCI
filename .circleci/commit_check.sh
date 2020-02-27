@@ -61,7 +61,7 @@ do
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
     if [[ $PACKAGE == "requirements.txt" ]]; then
       # echo "commit-${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
-      checksum=$(git log -n 1 --pretty=format:%H -- $PACKAGE)
+      checksum=$(git log -n 1 --pretty=format:%H -- Docker/SimpleApp/requirements.txt)
       echo -e "checksum is: ${checksum}"
       SHORT_GIT_HASH=$(echo $checksum | cut -c -7)
       echo "SHORT_GIT_HASH is: ${SHORT_GIT_HASH}"
