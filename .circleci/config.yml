@@ -1,14 +1,14 @@
-version: 2.1
+version: 2.0
 
 parameters:
   # This parameter is used to trigger the main workflow
-    trigger:
-        type: boolean
-        default: true
+    # trigger:
+    #     type: boolean
+    #     default: true
   
-    requirements:
-        type: boolean
-        default: false
+    # requirements:
+    #     type: boolean
+    #     default: false
 
 jobs:
     build-deps:
@@ -154,13 +154,15 @@ jobs:
 workflows:
   version: 2
   ci:
-    when: << pipeline.parameters.trigger >>
+    # when: << pipeline.parameters.trigger >>
     jobs:
       - build-deps
   others:
-    when: << pipeline.parameters.requirements >>
+    # when: << pipeline.parameters.requirements >>
     jobs:
       - build_img:
+            require:
+                - build-deps
             filters:
                 branches:
                     only:
