@@ -56,7 +56,7 @@ for PACKAGE in ${PACKAGES[@]}
 do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
   LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $CIRCLE_SHA1 ^$LAST_COMPLETED_BUILD_SHA --format=format:%H --full-diff ${PACKAGE_PATH#/})
-
+  echo $PACKAGE
   if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD"]] && [["$PACKAGE" != "requirements.txt" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
   else
