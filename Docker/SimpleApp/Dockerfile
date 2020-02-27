@@ -21,6 +21,7 @@ ENV PORT 8080
 EXPOSE $PORT
 
 # Setting Persistent data
+
 VOLUME ["/app-data"]
 
 # Running Python Application

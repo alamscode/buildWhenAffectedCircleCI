@@ -56,13 +56,17 @@ for PACKAGE in ${PACKAGES[@]}
 do
   PACKAGE_PATH=${ROOT#.}/$PACKAGE
   LATEST_COMMIT_SINCE_LAST_BUILD=$(git log -1 $CIRCLE_SHA1 ^$LAST_COMPLETED_BUILD_SHA --format=format:%H --full-diff ${PACKAGE_PATH#/})
-  echo "$PACKAGE"
-  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD"]] && "$PACKAGE" != "requirements.txt" ]]; then
+
+  if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
   else
-    PARAMETERS+=", \"requirements\":true"
-    COUNT=$((COUNT + 1))
-    echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
+    if [[ $PACKAGE == "requirements.txt" ]]; then
+        PARAMETERS+=", \"requirements\":true"
+        COUNT=$((COUNT + 1))
+        echo -e "\e[36m  [+] ${PACKAGE} \e[21m (changed in [${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}])\e[0m"
+    else
+        echo -e "\e[90m  [-] $PACKAGE \e[0m"
+    fi
   fi
 done
 
