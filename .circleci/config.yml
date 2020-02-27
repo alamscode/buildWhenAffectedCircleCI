@@ -1,15 +1,5 @@
 version: 2.0
 
-parameters:
-  # This parameter is used to trigger the main workflow
-    # trigger:
-    #     type: boolean
-    #     default: true
-  
-    # requirements:
-    #     type: boolean
-    #     default: false
-
 jobs:
     build-deps:
         docker:
@@ -36,7 +26,6 @@ jobs:
                 version: 18.06.0-ce
             - attach_workspace: 
                 at: .circleci
-            - run: cat .circleci/checksum
             - run:
                 name: Build and push wing/api-audit
                 command: |
@@ -50,12 +39,7 @@ jobs:
                     
 workflows:
   version: 2
-#   ci:
-#     # when: << pipeline.parameters.trigger >>
-#     jobs:
-#       - build-deps
   flow:
-    # when: << pipeline.parameters.requirements >>
     jobs:
       - build-deps
       - build_img:
