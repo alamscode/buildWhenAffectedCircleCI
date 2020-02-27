@@ -120,7 +120,7 @@ jobs:
             - persist_to_workspace:
                   root: .circleci
                   paths:
-                      - commit_check.sh
+                      - ./*
     build_img:
         parameters:
         docker:
