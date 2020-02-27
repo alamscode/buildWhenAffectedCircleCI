@@ -153,13 +153,14 @@ jobs:
                     
 workflows:
   version: 2
-  ci:
-    # when: << pipeline.parameters.trigger >>
-    jobs:
-      - build-deps
-  others:
+#   ci:
+#     # when: << pipeline.parameters.trigger >>
+#     jobs:
+#       - build-deps
+  flow:
     # when: << pipeline.parameters.requirements >>
     jobs:
+      - build-deps
       - build_img:
             requires:
                 - build-deps
