@@ -60,7 +60,7 @@ do
   if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
     if [[ $PACKAGE == "requirements.txt" ]]; then
-      echo "commit-${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
+      echo "commit-$LAST_COMPLETED_BUILD_SHA" > .circleci/checksum
     fi
 
   else
