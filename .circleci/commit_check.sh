@@ -62,9 +62,7 @@ do
     if [[ $PACKAGE == "requirements.txt" ]]; then
       # echo "commit-${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
       checksum=$(git log -n 1 --pretty=format:%H -- ${PACKAGE_PATH#/})
-      echo -e "checksum is: ${checksum}"
       SHORT_GIT_HASH=$(echo $checksum | cut -c -7)
-      echo "SHORT_GIT_HASH is: ${SHORT_GIT_HASH}"
       echo -e "${SHORT_GIT_HASH}" > .circleci/checksum
     fi
   else
