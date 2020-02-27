@@ -11,15 +11,6 @@ parameters:
         default: false
 
 jobs:
-    # trigger-workflows:
-    #     docker:
-    #         - image: circleci/python:3.6
-    #     steps:
-    #     - checkout
-    #     - run:
-    #         name: Trigger workflows
-    #         command: chmod +x .circleci/commit_check.sh && .circleci/commit_check.sh
-
     build-deps:
         docker:
             - image: circleci/python:3.6
@@ -59,7 +50,7 @@ workflows:
   ci:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - trigger-workflows
+      - build-deps
   others:
     when: << pipeline.parameters.requirements >>
     jobs:
