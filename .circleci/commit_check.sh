@@ -59,6 +59,10 @@ do
 
   if [[ -z "$LATEST_COMMIT_SINCE_LAST_BUILD" ]]; then
     echo -e "\e[90m  [-] $PACKAGE \e[0m"
+    if [[ $PACKAGE == "requirements.txt" ]]; then
+      echo "${LATEST_COMMIT_SINCE_LAST_BUILD:0:7}" > .circleci/checksum
+    fi
+
   else
     if [[ $PACKAGE == "requirements.txt" ]]; then
         PARAMETERS+=", \"requirements\":true"
