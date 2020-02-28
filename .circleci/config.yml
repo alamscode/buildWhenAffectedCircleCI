@@ -8,7 +8,9 @@ jobs:
         - checkout
         - run:
             name: build-deps
-            command: chmod +x .circleci/commit_check.sh &&.circleci/commit_check.sh
+            command: |
+                chmod +x .circleci/commit_check.sh 
+                .circleci/commit_check.sh
         - persist_to_workspace:
             root: .circleci
             paths:
