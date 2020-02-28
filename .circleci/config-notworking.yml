@@ -1,0 +1,113 @@
+version: 2
+jobs:
+  build-deps:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run:
+          name: build-deps
+          command: |
+            chmod +x .circleci/commit_check.sh \
+            .circleci/commit_check.sh
+      - persist_to_workspace:
+          root: .circleci
+          paths:
+            - ./*
+  build_test:
+    docker:
+      - image: 267240417278.dkr.ecr.us-east-1.amazonaws.com/wingaudit/api-test:2020022002
+        aws_auth:
+            aws_access_key_id: $AWS_ACCESS_KEY
+            aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+        environment:
+            TZ: "/usr/share/zoneinfo/America/New_York"
+            ENV: test
+            DATABASE_URL: postgresql://wingaudit@localhost/db_test?sslmode=disable
+      - image: circleci/postgres:11.5-alpine-ram
+        environment:
+            POSTGRES_USER: wingaudit
+            POSTGRES_DB: db_test
+            POSTGRES_PASSWORD: ""
+    working_directory: /srv/wingaudit
+    steps:
+      - checkout
+      - run:
+          name: Check tested commits
+          command: |
+            .circleci/sum-tests.sh > .thistest
+            cat .thistest
+      - restore_cache:
+          key: v1-tested-commits-{{ checksum ".thistest" }}
+      - run:
+          name: Run tests
+          command: |
+            .circleci/check-tests.sh .thistest .lasttest && exit 0
+            source /srv/.env/bin/activate
+            nose2 --with-coverage --coverage=src tests
+      - run:
+          name: Save tested commits
+          command: |
+            cp -vf .thistest .lasttest
+            cat .lasttest
+      - save_cache:
+          key: v1-tested-commits-{{ checksum ".lasttest" }}
+          paths:
+            - /srv/wingaudit/.lasttest
+            - /srv/wingaudit/codecov.xml
+  build_img:
+    parameters:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - attach_workspace: 
+          at: .circleci
+      - run:
+          name: Build and push wing/api-audit
+          command: |
+            pip install awscli --upgrade --user
+            aws configure set \
+            aws_access_key_id $AWS_ACCESS_KEY
+            aws configure set \
+            aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            chmod +x .circleci/build_img.sh && .circleci/build_img.sh 
+  # deploy_prod:
+  #   docker:
+  #     - image: circleci/python:3.7
+  #       environment:
+  #           TZ: "/usr/share/zoneinfo/America/New_York"
+  #   steps:
+  #     - checkout
+  #     - deploy:
+  #         command: |
+  #           cat ./node_config >> ~/.ssh/config
+  #           bash ./ecs_deploy.sh master prod
+workflows:
+  version: 2
+  initial_flow:
+    jobs:
+      - build-deps
+      # - build_test:
+      #     requires:
+      #       - build-deps
+      - build_img:
+          requires:
+            - build-deps
+          filters:
+            branches:
+              only:
+                - /^docker-.*/
+                - develop
+                - staging
+                - master
+      # - deploy_prod:
+      #     filters:
+      #       branches:
+      #         only: master
+      #     requires:
+      #       - build-deps
+      #       - build_test
+      #       - build_img
