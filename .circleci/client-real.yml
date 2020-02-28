@@ -56,43 +56,59 @@ jobs:
             - /srv/wingaudit/.lasttest
             - /srv/wingaudit/codecov.xml
   build_img:
-    parameters:
     docker:
-      - image: circleci/python:3.6
+      - image: 267240417278.dkr.ecr.us-east-1.amazonaws.com/circleci/python:3.7
+        aws_auth:
+            aws_access_key_id: $AWS_ACCESS_KEY
+            aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+        environment:
+            TZ: "/usr/share/zoneinfo/America/New_York"
+            VERSION_BRANCHES: "develop staging master"
     steps:
       - checkout
       - setup_remote_docker:
           version: 18.06.0-ce
       - attach_workspace: 
-          at: .circleci
+          at: .circleci          
       - run:
           name: Build and push wing/api-audit
           command: |
-            pip install awscli --upgrade --user
             aws configure set \
             aws_access_key_id $AWS_ACCESS_KEY
             aws configure set \
             aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            chmod +x .circleci/build_img.sh && .circleci/build_img.sh 
-  # deploy_prod:
-  #   docker:
-  #     - image: circleci/python:3.7
-  #       environment:
-  #           TZ: "/usr/share/zoneinfo/America/New_York"
-  #   steps:
-  #     - checkout
-  #     - deploy:
-  #         command: |
-  #           cat ./node_config >> ~/.ssh/config
-  #           bash ./ecs_deploy.sh master prod
+            aws configure set region $AWS_DEFAULT_REGION
+            .circleci/build_img.sh microservice \
+            $CIRCLE_BRANCH ${CIRCLE_SHA1:0:7} \
+            2020022002 \
+            $(cat .circleci/checksum)
+      - add_ssh_keys:
+          fingerprints:
+            - "f3:ad:d9:6d:e9:ae:a5:9a:77:7a:6c:b5:47:9a:1c:72"
+            - "48:54:db:bc:e6:3d:5e:c7:df:c6:18:11:05:e2:64:4c"
+      - run:
+          name: Configure git and tag branch
+          command: |
+            .circleci/push_git_tag.sh
+  deploy_prod:
+    docker:
+      - image: circleci/python:3.7
+        environment:
+            TZ: "/usr/share/zoneinfo/America/New_York"
+    steps:
+      - checkout
+      - deploy:
+          command: |
+            cat ./node_config >> ~/.ssh/config
+            bash ./ecs_deploy.sh master prod
 workflows:
   version: 2
   initial_flow:
     jobs:
       - build-deps
-      # - build_test:
-      #     requires:
-      #       - build-deps
+      - build_test:
+          requires:
+            - build-deps
       - build_img:
           requires:
             - build-deps
@@ -103,11 +119,11 @@ workflows:
                 - develop
                 - staging
                 - master
-      # - deploy_prod:
-      #     filters:
-      #       branches:
-      #         only: master
-      #     requires:
-      #       - build-deps
-      #       - build_test
-      #       - build_img
+      - deploy_prod:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build-deps
+            - build_test
+            - build_img
