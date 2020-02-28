@@ -28,6 +28,7 @@ jobs:
             - run:
                 name: Build and push wing/api-audit
                 command: |
+                    echo -e $(cat .circleci/checksum)
                     pip install awscli --upgrade --user
                     aws configure set \
                     aws_access_key_id $AWS_ACCESS_KEY

@@ -7,5 +7,6 @@ do
     checksum=$(git log -n 1 --pretty=format:%H -- ${PACKAGE_PATH#/})
     SHORT_GIT_HASH=$(echo $checksum | cut -c -7)
     echo -e "${SHORT_GIT_HASH}" > .circleci/checksum
+    echo -e $(cat .circleci/checksum)
   fi
 done
